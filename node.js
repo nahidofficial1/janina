@@ -1,3 +1,9 @@
+import express from "express";
+const app = express();
+
+app.get("/", (req, res) => res.send("Bot is alive ✅"));
+app.listen(3000, () => console.log("✅ Server is running on port 3000"));
+
 import puppeteer from 'puppeteer';
 import * as cheerio from 'cheerio';
 import axios from 'axios';
