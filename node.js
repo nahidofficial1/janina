@@ -1,32 +1,59 @@
+// ======================================================================
+// 🌐 Express Keep-Alive Server (for Render / UptimeRobot)
 import express from "express";
 const app = express();
 
 app.get("/", (req, res) => res.send("Bot is alive ✅"));
 app.listen(3000, () => console.log("✅ Server is running on port 3000"));
 
-import puppeteer from "puppeteer";
+// ======================================================================
+// 🧠 Dependencies
+import puppeteer from "puppeteer-core";
+import { install, computeExecutablePath } from "@puppeteer/browsers";
+import * as cheerio from "cheerio";
+import axios from "axios";
+import winston from "winston";
+import fs from "fs";
+import path from "path";
+import FormData from "form-data";
+import { fileURLToPath } from "url";
+import ffmpeg from "fluent-ffmpeg";
+import ffmpegPath from "ffmpeg-static";
+import TelegramBot from "node-telegram-bot-api";
+import { COUNTRY_FLAGS, COUNTRY_NAME_TO_CODE } from "./countries.js";
 
-const browser = await puppeteer.launch({
-  headless: true,
-  args: [
-    "--no-sandbox",
-    "--disable-setuid-sandbox",
-  ],
-  executablePath: puppeteer.executablePath()
-});
-import puppeteer from 'puppeteer';
-import * as cheerio from 'cheerio';
-import axios from 'axios';
-import winston from 'winston';
-import fs from 'fs';
-import path from 'path';
-import FormData from 'form-data';
-import { fileURLToPath } from 'url';
-import ffmpeg from 'fluent-ffmpeg';
-import ffmpegPath from 'ffmpeg-static';
-import { COUNTRY_FLAGS, COUNTRY_NAME_TO_CODE } from './countries.js';
+// ======================================================================
+// 🔧 Puppeteer Chrome Installer (Render compatible)
+const setupPuppeteer = async () => {
+  try {
+    await install({
+      browser: "chrome",
+      buildId: "stable",
+      cacheDir: process.env.PUPPETEER_CACHE_DIR || "/opt/render/.cache/puppeteer",
+    });
+  } catch (e) {
+    console.warn("⚠️ Puppeteer install warning:", e.message);
+  }
 
+  const browserPath = computeExecutablePath({
+    browser: "chrome",
+    buildId: "stable",
+    cacheDir: process.env.PUPPETEER_CACHE_DIR || "/opt/render/.cache/puppeteer",
+  });
 
+  const browser = await puppeteer.launch({
+    headless: true,
+    executablePath: browserPath,
+    args: [
+      "--no-sandbox",
+      "--disable-setuid-sandbox",
+      "--disable-dev-shm-usage",
+      "--disable-blink-features=AutomationControlled",
+    ],
+  });
+
+  return browser;
+};
 
 // Telegram Control Panel System (Add / Run / Stop)
 // ======================================================================
