@@ -1,5 +1,5 @@
 {
-  "name": "nodejs",
+  "name": "janina",
   "version": "1.0.0",
   "type": "module",
   "main": "node.js",
@@ -7,13 +7,13 @@
     "start": "node node.js"
   },
   "dependencies": {
-    "@types/node": "^22.13.11",
-    "axios": "^1.12.2",
-    "cheerio": "^1.1.2",
+    "express": "^4.19.2",
+    "axios": "^1.6.7",
+    "cheerio": "^1.0.0-rc.12",
+    "puppeteer": "^22.6.3",
+    "fluent-ffmpeg": "^2.1.2",
     "ffmpeg-static": "^5.2.0",
-    "fluent-ffmpeg": "^2.1.3",
-    "form-data": "^4.0.4",
-    "puppeteer": "^24.25.0",
-    "winston": "^3.18.3"
+    "form-data": "^4.0.0",
+    "winston": "^3.10.0"
   }
 }
