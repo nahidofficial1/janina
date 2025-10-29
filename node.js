@@ -4,6 +4,16 @@ const app = express();
 app.get("/", (req, res) => res.send("Bot is alive ✅"));
 app.listen(3000, () => console.log("✅ Server is running on port 3000"));
 
+import puppeteer from "puppeteer";
+
+const browser = await puppeteer.launch({
+  headless: true,
+  args: [
+    "--no-sandbox",
+    "--disable-setuid-sandbox",
+  ],
+  executablePath: puppeteer.executablePath()
+});
 import puppeteer from 'puppeteer';
 import * as cheerio from 'cheerio';
 import axios from 'axios';
